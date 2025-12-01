@@ -10,13 +10,14 @@ import br.com.desafio.geradorcupons.factory.CouponEntityFactory;
 import br.com.desafio.geradorcupons.service.CouponService;
 import br.com.desafio.geradorcupons.utils.CouponUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/api/v1/cupom/")
@@ -43,19 +44,39 @@ public class GeradorCuponsController {
 
             CouponEntity couponEntity = CouponEntityFactory.createFrom(couponRequest);
 
-            couponService.save(couponEntity);
+            couponService.saveOrUpdate(couponEntity);
 
             return ResponseEntity.status(CREATED.value())
                     .body(new CouponResponse("Your coupon has been created successfully"));
+        } catch (DataIntegrityViolationException d) {
+            return ResponseEntity.status(CONFLICT.value())
+                    .body(new CouponResponseError("Code already registered"));
         } catch (Exception e) {
             return ResponseEntity.status(BAD_REQUEST.value())
                     .body(new CouponResponseError(e.getMessage()));
         }
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> delete() {
-        return ResponseEntity.ok("ok");
+    @DeleteMapping("/delete/{code}")
+    public ResponseEntity<?> delete(@PathVariable(required = true) String code) {
+        try {
+            Optional<CouponEntity> couponEntityOptional = couponService.findByCodeAndCouponDeletedFalse(code);
 
+            if (couponEntityOptional.isEmpty()) {
+                throw new CouponInvalidException("Coupon does not exist or already deleted");
+            }
+
+            CouponEntity couponEntity = CouponEntityFactory.createFrom(couponEntityOptional.get());
+
+            couponService.saveOrUpdate(couponEntity);
+
+            return ResponseEntity.ok(new CouponResponse("Coupon deleted successfully"));
+        } catch (CouponInvalidException c) {
+            return ResponseEntity.status(CONFLICT.value())
+                    .body(new CouponResponseError(c.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR.value())
+                    .body(new CouponResponseError(e.getMessage()));
+        }
     }
 }
