@@ -14,8 +14,11 @@ public class CouponEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "promo_code", length = 6, nullable = false)
-    private String promoCode;
+    @Column(name = "code", length = 6, nullable = false)
+    private String code;
+
+    @Column(name = "description", length = 64, nullable = false)
+    private String description;
 
     @DecimalMin(value = "0.5")
     @Column(name = "discount_value", nullable = false)
@@ -24,11 +27,11 @@ public class CouponEntity {
     @Column(name = "expiration_date", nullable = false)
     private LocalDate expirationDate;
 
-    @Column(name = "is_coupon_valid", nullable = false)
-    private boolean isCouponValid;
+    @Column(name = "published", nullable = false)
+    private boolean published = false;
 
-    @Column(name = "is_coupon_deleted", nullable = false)
-    private boolean isCouponDeleted = false;
+    @Column(name = "coupon_deleted", nullable = false)
+    private boolean couponDeleted = false;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -39,15 +42,16 @@ public class CouponEntity {
     public CouponEntity() {
     }
 
-    public CouponEntity(Long id, String promoCode, double discountValue, LocalDate expirationDate, boolean isCouponValid, boolean isCouponDeleted, LocalDateTime createdAt, LocalDateTime deletedAt) {
-        this.id = id;
-        this.promoCode = promoCode;
-        this.discountValue = discountValue;
-        this.expirationDate = expirationDate;
-        this.isCouponValid = isCouponValid;
-        this.isCouponDeleted = isCouponDeleted;
-        this.createdAt = createdAt;
-        this.deletedAt = deletedAt;
+    private CouponEntity(Builder builder) {
+        this.id = builder.id;
+        this.code = builder.code;
+        this.description = builder.description;
+        this.discountValue = builder.discountValue;
+        this.expirationDate = builder.expirationDate;
+        this.published = builder.published;
+        this.couponDeleted = builder.couponDeleted;
+        this.createdAt = builder.createdAt;
+        this.deletedAt = builder.deletedAt;
     }
 
     public Long getId() {
@@ -58,12 +62,20 @@ public class CouponEntity {
         this.id = id;
     }
 
-    public String getPromoCode() {
-        return promoCode;
+    public String getCode() {
+        return code;
     }
 
-    public void setPromoCode(String promoCode) {
-        this.promoCode = promoCode;
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public double getDiscountValue() {
@@ -82,20 +94,20 @@ public class CouponEntity {
         this.expirationDate = expirationDate;
     }
 
-    public boolean isCouponValid() {
-        return isCouponValid;
+    public boolean isPublished() {
+        return published;
     }
 
-    public void setCouponValid(boolean couponValid) {
-        isCouponValid = couponValid;
+    public void setPublished(boolean published) {
+        this.published = published;
     }
 
     public boolean isCouponDeleted() {
-        return isCouponDeleted;
+        return couponDeleted;
     }
 
     public void setCouponDeleted(boolean couponDeleted) {
-        isCouponDeleted = couponDeleted;
+        this.couponDeleted = couponDeleted;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -112,5 +124,67 @@ public class CouponEntity {
 
     public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public static class Builder {
+
+        private Long id;
+        private String code;
+        private String description;
+        private double discountValue;
+        private LocalDate expirationDate;
+        private boolean published = false;
+        private boolean couponDeleted = false;
+        private LocalDate createdAt = LocalDate.now();
+        private LocalDate deletedAt;
+
+        public Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder code(String code) {
+            this.code = code;
+            return this;
+        }
+
+        public Builder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder discountValue(double discountValue) {
+            this.discountValue = discountValue;
+            return this;
+        }
+
+        public Builder expirationDate(LocalDate expirationDate) {
+            this.expirationDate = expirationDate;
+            return this;
+        }
+
+        public Builder published(boolean published) {
+            this.published = published;
+            return this;
+        }
+
+        public Builder couponDeleted(boolean couponDeleted) {
+            this.couponDeleted = couponDeleted;
+            return this;
+        }
+
+        public Builder createdAt(LocalDate createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public Builder deletedAt(LocalDate deletedAt) {
+            this.deletedAt = deletedAt;
+            return this;
+        }
+
+        public CouponEntity build() {
+            return new CouponEntity(this);
+        }
     }
 }
