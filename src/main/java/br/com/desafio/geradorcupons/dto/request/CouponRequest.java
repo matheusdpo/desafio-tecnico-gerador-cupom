@@ -9,7 +9,7 @@ public class CouponRequest {
     private LocalDate expirationDate;
     private Boolean published;
 
-    private CouponRequest() {
+    public CouponRequest() {
     }
 
     public CouponRequest(String code, double discountValue, LocalDate expirationDate, boolean published) {
