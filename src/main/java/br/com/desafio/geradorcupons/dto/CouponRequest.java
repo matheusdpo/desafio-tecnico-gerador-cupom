@@ -3,27 +3,36 @@ package br.com.desafio.geradorcupons.dto;
 import java.time.LocalDate;
 
 public class CouponRequest {
-    private String promoCode;
+    private String code;
+    private String description;
     private double discountValue;
     private LocalDate expirationDate;
-    private Boolean couponValid;
+    private Boolean published;
 
-    public CouponRequest() {
+    private CouponRequest() {
     }
 
-    public CouponRequest(String promoCode, double discountValue, LocalDate expirationDate, boolean couponValid) {
-        this.promoCode = promoCode;
+    public CouponRequest(String code, double discountValue, LocalDate expirationDate, boolean published) {
+        this.code = code;
         this.discountValue = discountValue;
         this.expirationDate = expirationDate;
-        this.couponValid = couponValid;
+        this.published = published;
     }
 
-    public String getPromoCode() {
-        return promoCode;
+    public String getCode() {
+        return code;
     }
 
-    public void setPromoCode(String promoCode) {
-        this.promoCode = promoCode;
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public double getDiscountValue() {
@@ -42,21 +51,11 @@ public class CouponRequest {
         this.expirationDate = expirationDate;
     }
 
-    public boolean isCouponValid() {
-        return couponValid;
+    public Boolean getPublished() {
+        return published;
     }
 
-    public void setCouponValid(boolean couponValid) {
-        this.couponValid = couponValid;
-    }
-
-    @Override
-    public String toString() {
-        return "CouponRequest{" +
-                "promoCode='" + promoCode + '\'' +
-                ", discountValue=" + discountValue +
-                ", expirationDate=" + expirationDate +
-                ", isCouponValid=" + couponValid +
-                '}';
+    public void setPublished(Boolean published) {
+        this.published = published;
     }
 }
