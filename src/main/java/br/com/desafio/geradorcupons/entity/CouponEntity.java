@@ -135,8 +135,8 @@ public class CouponEntity {
         private LocalDate expirationDate;
         private boolean published = false;
         private boolean couponDeleted = false;
-        private LocalDate createdAt = LocalDate.now();
-        private LocalDate deletedAt;
+        private LocalDateTime createdAt = LocalDateTime.now();
+        private LocalDateTime deletedAt;
 
         public Builder id(Long id) {
             this.id = id;
@@ -173,12 +173,12 @@ public class CouponEntity {
             return this;
         }
 
-        public Builder createdAt(LocalDate createdAt) {
+        public Builder createdAt(LocalDateTime createdAt) {
             this.createdAt = createdAt;
             return this;
         }
 
-        public Builder deletedAt(LocalDate deletedAt) {
+        public Builder deletedAt(LocalDateTime deletedAt) {
             this.deletedAt = deletedAt;
             return this;
         }
