@@ -14,7 +14,7 @@ public class CouponEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "code", length = 6, nullable = false)
+    @Column(name = "code", length = 6, nullable = false, unique = true)
     private String code;
 
     @Column(name = "description", length = 64, nullable = false)
