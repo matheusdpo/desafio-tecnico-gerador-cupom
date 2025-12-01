@@ -84,6 +84,33 @@ class GeradorCuponsControllerTests {
         assertThrows(NullPointerException.class, () -> cuponsController.create(request));
     }
 
+    @Test
+    void delete_success() {
+        CouponEntity coupon = new CouponEntity();
+        coupon.setId(1L);
+        coupon.setStatus(StatusCouponEnum.ACTIVE);
+
+        when(couponService.findByIdAndStatus(1L, StatusCouponEnum.ACTIVE))
+                .thenReturn(Optional.of(coupon));
+
+        ResponseEntity<CouponResponse> response = cuponsController.delete(1L);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Coupon deleted successfully", response.getBody().getMessage());
+        verify(couponService, times(1)).saveOrUpdate(any());
+    }
+
+    @Test
+    void delete_already_deleted() {
+        CouponEntity coupon = new CouponEntity();
+        coupon.setId(1L);
+        coupon.setStatus(StatusCouponEnum.DELETED);
+
+        when(couponService.findByIdAndStatus(1L, StatusCouponEnum.ACTIVE))
+                .thenReturn(Optional.empty());
+
+        assertThrows(CouponInvalidException.class, () -> cuponsController.delete(1L));
+    }
 
 
 }
