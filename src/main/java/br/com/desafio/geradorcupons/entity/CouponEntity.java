@@ -1,5 +1,6 @@
 package br.com.desafio.geradorcupons.entity;
 
+import br.com.desafio.geradorcupons.enums.StatusCouponEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 
@@ -30,8 +31,12 @@ public class CouponEntity {
     @Column(name = "published", nullable = false)
     private boolean published = false;
 
-    @Column(name = "coupon_deleted", nullable = false)
-    private boolean couponDeleted = false;
+    @Enumerated
+    @Column(name = "status", nullable = false)
+    private StatusCouponEnum status = StatusCouponEnum.ACTIVE;
+
+    @Column(name = "redeemed", nullable = false)
+    private boolean redeemed = false;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -49,7 +54,7 @@ public class CouponEntity {
         this.discountValue = builder.discountValue;
         this.expirationDate = builder.expirationDate;
         this.published = builder.published;
-        this.couponDeleted = builder.couponDeleted;
+        this.status = builder.statusCouponEnum;
         this.createdAt = builder.createdAt;
         this.deletedAt = builder.deletedAt;
     }
@@ -102,12 +107,20 @@ public class CouponEntity {
         this.published = published;
     }
 
-    public boolean isCouponDeleted() {
-        return couponDeleted;
+    public boolean isRedeemed() {
+        return redeemed;
     }
 
-    public void setCouponDeleted(boolean couponDeleted) {
-        this.couponDeleted = couponDeleted;
+    public void setRedeemed(boolean redeemed) {
+        this.redeemed = redeemed;
+    }
+
+    public StatusCouponEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusCouponEnum status) {
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -134,7 +147,8 @@ public class CouponEntity {
         private double discountValue;
         private LocalDate expirationDate;
         private boolean published = false;
-        private boolean couponDeleted = false;
+        private StatusCouponEnum statusCouponEnum;
+        private boolean redeemed;
         private LocalDateTime createdAt = LocalDateTime.now();
         private LocalDateTime deletedAt;
 
@@ -168,8 +182,13 @@ public class CouponEntity {
             return this;
         }
 
-        public Builder couponDeleted(boolean couponDeleted) {
-            this.couponDeleted = couponDeleted;
+        public Builder status(StatusCouponEnum statusCouponEnum) {
+            this.statusCouponEnum = statusCouponEnum;
+            return this;
+        }
+
+        public Builder redeemed(boolean redeemed) {
+            this.redeemed = redeemed;
             return this;
         }
 

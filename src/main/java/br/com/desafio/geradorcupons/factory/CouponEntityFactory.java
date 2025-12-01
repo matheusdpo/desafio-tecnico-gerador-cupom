@@ -1,7 +1,8 @@
 package br.com.desafio.geradorcupons.factory;
 
-import br.com.desafio.geradorcupons.dto.CouponRequest;
+import br.com.desafio.geradorcupons.dto.request.CouponRequest;
 import br.com.desafio.geradorcupons.entity.CouponEntity;
+import br.com.desafio.geradorcupons.enums.StatusCouponEnum;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +15,8 @@ public class CouponEntityFactory {
                 .discountValue(couponRequest.getDiscountValue())
                 .expirationDate(couponRequest.getExpirationDate())
                 .published(couponRequest.getPublished())
-                .couponDeleted(false)
+                .status(StatusCouponEnum.ACTIVE)
+                .redeemed(false)
                 .build();
     }
 
@@ -26,9 +28,10 @@ public class CouponEntityFactory {
                 .discountValue(couponEntity.getDiscountValue())
                 .expirationDate(couponEntity.getExpirationDate())
                 .published(couponEntity.isPublished())
-                .couponDeleted(true)
+                .status(StatusCouponEnum.DELETED)
                 .createdAt(couponEntity.getCreatedAt())
                 .deletedAt(LocalDateTime.now())
+                .redeemed(couponEntity.isRedeemed())
                 .build();
     }
 }
