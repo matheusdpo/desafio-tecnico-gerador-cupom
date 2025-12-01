@@ -1,4 +1,4 @@
-package br.com.desafio.geradorcupons.dto;
+package br.com.desafio.geradorcupons.dto.request;
 
 import java.time.LocalDate;
 
