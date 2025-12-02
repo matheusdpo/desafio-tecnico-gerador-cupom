@@ -1,18 +1,45 @@
-# TODO - CUPOM
-### 1. Endpoint create:
+# Gerador de Cupons
 
-* codigo do cupom - String com 6 caracretes, sem caracretes especiais. Caso tenha menos que 6 char, completar
+API REST para criar e deletar cupons.
 
-* descricao do cupom
+## Tecnologias
+- Java 17+
+- Spring Boot
+- Maven
 
-* valor de desconto - Valor minimo de 0.5c
+## Endpoints
 
-* data de expiracao - LocalDate - nao pode ser contra o dia criado
+| Método | URL | Descrição |
+|--------|-----|-----------|
+| POST   | /api/v1/cupom/create | Cria um cupom |
+| DELETE | /api/v1/cupom/delete/{id} | Deleta um cupom ativo pelo ID |
 
-* isValid = boolean. esse campo define se esta ublicado (liberado par auso) ou false (nao liberado)
+### POST /api/v1/cupom/create
+**Body JSON:**
+```json
+{
+  "code": "XXX000",
+  "discountValue": 1,
+  "expirationDate": "2025-12-31",
+  "published": true,
+  "description": "Test discount"
+}
+```
 
-2. Endpoint delete
-nao ha restricoes para delete, pode ser deletado a qualquer hora
-deve ser feito soft delete, ou seja, criar um campo isDeletes = true (cupom ativo) e false = inativo
+### DELETE /api/v1/cupom/delete/{id}
+**Insira o ID do banco de dados**
 
-Obs: h2, testes e github
+## Como rodar
+
+1. Clone o projeto:
+```bash
+git clone https://github.com/matheusdpo/desafio-tecnico-gerador-cupom.git
+cd desafio-tecnico-gerador-cupom
+```
+2. Rode a aplicação:
+```bash
+mvn clean spring-boot:run
+```
+3. Acesse o banco em em `http://localhost:9000/h2-console`
+- Login: gerador
+- Senha: gerador
